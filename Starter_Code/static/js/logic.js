@@ -39,7 +39,7 @@ let myMap = L.map("map", {
   function style(feature) {
     return {
       radius: feature.properties.mag * 5, // Adjust the multiplier for better visualization
-      fillColor: getColor(feature.geometry.coordinates[2]), // Use depth from coordinates
+      fillColor: getColor(feature.geometry.coordinates[2]), // Use depth from coordinates via hint
       color: '#000',
       weight: 1,
       opacity: 0.8,
@@ -47,38 +47,32 @@ let myMap = L.map("map", {
     };
   }
   
-  // Function to get color based on depth
-  function getColor(depth) {
-    return depth > 10 ? '#red' :
-    depth > 30 ? '#redorange' :
-    depth > 50 ? '#orange' :
-    depth > 70 ? '#orangeyellow' :
-    depth > 90 ? '#yellow' :
-    '#green';
+// Getting the colors for the circles and legend based on depth
+function getColor(depth) {
+    return depth >= 90 ? "#FF0D0D" :
+        depth < 90 && depth >= 70 ? "#FF4E11" :
+        depth < 70 && depth >= 50 ? "#FF8E15" :
+        depth < 50 && depth >= 30 ? "#FFB92E" :
+        depth < 30 && depth >= 10 ? "#ACB334" :
+                                    "#69B34C";
   }
-
   
-// Create a legend control
-var legend = L.control({ position: 'bottomright' });
+// Setting up the legend
+    var legend = L.control({position: 'bottomright'});
 
-// Create a legend control
-var legend = L.control({ position: 'bottomright' });
+    legend.onAdd = () => {
+        var div = L.DomUtil.create('div', 'info legend');
+        grades = [-10, 10, 30, 50, 70, 90];
 
-// Function to update the legend based on the depth range
-legend.onAdd = function (map) {
-  var div = L.DomUtil.create('div', 'info legend'),
-    depths = [0, 10, 30, 50, 70, 90],
-    labels = [];
-
-  // loop through depth intervals and generate a label with a colored square for each interval
-  for (var i = 0; i < depths.length; i++) {
-    div.innerHTML +=
-      '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
-      depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-  }
-
-  return div;
-};
+        // Looping through our intervals and generating a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+        return div;
+    };
+    legend.addTo(myMap);
 
 // Add legend to the map
 legend.addTo(myMap);
