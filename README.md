@@ -56,3 +56,9 @@ Add other base maps to choose from.
 Put each dataset into separate overlays that can be turned on and off independently.
 
 Add layer controls to your map.
+
+# Sources
+Legend and Colors
+
+https://github.com/yeyanwang/leaflet-challenge
+ChatGPT
