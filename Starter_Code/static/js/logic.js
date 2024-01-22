@@ -13,7 +13,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Use this link to get the GeoJSON data.
 let link = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
-
+// Use d3 JSON to get data
+d3.json(link).then(function(earthquakeData) {
+    //Send data.features object to the createFeatures function.
+    console.log(earthquakeData);
+});
 
 // Function to style each marker based on magnitude and depth
 function style(feature) {
@@ -27,4 +31,3 @@ function style(feature) {
     };
   }
 
-  
